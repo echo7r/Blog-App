@@ -1,0 +1,31 @@
+/* Media Queries */
+@media (max-width:475px){
+    .post{
+        flex-direction: column;
+    }
+
+    .logform{
+        width: 295px !important;
+    } 
+
+    .regform{
+        width: 295px !important;
+    }
+}
+
+@media (min-width:476px) and (max-width:1023px){
+    .post .img{
+        min-width: 50%;
+    }
+}
+
+@media (min-width: 1024px){
+    .posts{
+        display: flex;
+        flex-wrap: nowrap;
+    }
+
+    .post{
+        flex-direction: column;
+    }
+}
