@@ -21,6 +21,8 @@ function Post({_id, title, summary, content, cover, createdAt, author }) {
         <div className="text min-w-[35%]">
           <Link to={`/post/${_id}`}>
             <h2 className="font-bold mt-4 text-xl">{title}</h2>
+
+            <p>{content}</p>
           </Link>
           {/* Author and Time */}
           <p className="info mt-4 flex gap-2 items-center">

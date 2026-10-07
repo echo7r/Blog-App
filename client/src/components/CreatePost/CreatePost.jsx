@@ -21,7 +21,7 @@ export default function CreatePost() {
         const response = await fetch('http://localhost:3000/post',{
           method: 'POST',
           body: data,
-          credentials: 'include'
+          credentials: "include"
         })
         if(response.ok){
           //if the response is ok which means the post's data has been added to the database

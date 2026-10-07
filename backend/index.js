@@ -14,7 +14,7 @@ const port = 3000;
 
 //encypting the password passed by user
 const salt = bcrypt.genSaltSync(10);
-const secret = bcrypt.genSaltSync(10);
+const secret = "3892u4yieu2khwfkjwhfhs";
 
 //MIDDLEWARES
 app.use(cors({ credentials: true, origin: "http://localhost:5173" })); //it helps us to connect our backend to frontend (localhost ports) because by default doing this is blocked by the browsers
@@ -84,37 +84,44 @@ app.post("/logout", (req, res) => {
 });
 
 app.post("/post", uploadMiddleware.single("file"), async (req, res) => {
-  console.log(`req : ${req}`);
-  console.log(`token : ${req.cookies.token}`);
 
-  //if the user did not inserted any image in that case
-  const newPath = null
-  if (req.file != null) {
-    const { originalname, path } = req.file;
-    //to get the file extension
-    const parts = originalname.split(".");
-    const ext = parts[parts.length - 1];
-    newPath = path + "." + ext;
-    fs.renameSync(path, newPath);
-  }
+    console.log("BODY:", req.body);
+    console.log("FILE:", req.file);
+    console.log("TOKEN:", req.cookies.token);
 
-  if(req.file=null){
-    newPath = ""
-  }
+    let newPath = null;
 
-  const { token } = req.cookies;
-  jwt.verify(token, secret, {}, async (err, info) => {
-    if (err) throw err;
-    const { title, summary, content } = req.body;
-    const postDoc = await post.create({
-      title,
-      summary,
-      content,
-      cover: newPath,
-      author: info.id,
+    if (req.file) {
+        const { originalname, path } = req.file;
+
+        const parts = originalname.split(".");
+        const ext = parts[parts.length - 1];
+
+        newPath = path + "." + ext;
+
+        fs.renameSync(path, newPath);
+    }
+
+    const { token } = req.cookies;
+
+    jwt.verify(token, secret, {}, async (err, info) => {
+
+        if (err) {
+            return res.status(401).json("Invalid token");
+        }
+
+        const { title, summary, content } = req.body;
+
+        const postDoc = await post.create({
+            title,
+            summary,
+            content,
+            cover: newPath,
+            author: info.id,
+        });
+
+        res.json(postDoc);
     });
-    res.json(postDoc);
-  });
 });
 
 app.get("/post", async (req, res) => {

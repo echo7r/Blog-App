@@ -8,7 +8,9 @@ function Layout(){
         <>
             <main>
                 <Navbar/>
-                <Outlet/>
+                <div className="h-full w-full">
+                    <Outlet/>
+                </div>
             </main>
         </>
     )
